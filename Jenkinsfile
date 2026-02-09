@@ -3,22 +3,15 @@ pipeline {
 
     stages {
 
-        stage('Install Dependencies') {
-            steps {
-               sh 'pip3 install -r requirements.txt'
-
-            }
-        }
-
-        stage('Run Tests') {
-            steps {
-                sh 'pytest'
-            }
-        }
-
         stage('Build Docker Image') {
             steps {
                 sh 'docker build -t flask-cicd .'
+            }
+        }
+
+        stage('Run Tests Inside Container') {
+            steps {
+                sh 'docker run --rm flask-cicd pytest'
             }
         }
 
